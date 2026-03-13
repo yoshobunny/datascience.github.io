@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ciencia de Datos — Tecmilenio</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --card: #1a1a26;
+    --ink: #e8e8f0;
+    --accent: #00e5ff;
+    --accent-light: rgba(0,229,255,0.10);
+    --accent2: #b8ff5e;
+    --accent2-light: rgba(184,255,94,0.10);
+    --muted: #b0b0cc;
+    --rule: rgba(255,255,255,0.07);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,15,0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--rule);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--ink);
+    letter-spacing: -0.2px;
+  }
+  .nav-logo em { font-style: normal; color: var(--accent); }
+  .nav-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    border: 1px solid rgba(0,229,255,0.3);
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  /* HERO */
+  .hero {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 6rem 2rem 4rem;
+  }
+  .hero-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .hero-label::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    line-height: 1.1;
+    letter-spacing: -1px;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero-sub {
+    font-family: 'Syne', sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    color: var(--muted);
+    letter-spacing: 0.2px;
+  }
+
+  /* INTRO CARDS */
+  .intro-grid {
+    max-width: 900px;
+    margin: 0 auto 5rem;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--rule);
+  }
+  .intro-card {
+    background: var(--card);
+    padding: 2rem;
+  }
+  .intro-card:nth-child(3),
+  .intro-card:nth-child(4) { border-top: 1px solid var(--rule); }
+  .intro-card-icon {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--accent2);
+    letter-spacing: 1px;
+    margin-bottom: 0.75rem;
+  }
+  .intro-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--ink);
+    margin-bottom: 0.6rem;
+  }
+  .intro-card p {
+    font-size: 0.875rem;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  /* DIVIDER */
+  hr.divider {
+    max-width: 900px;
+    margin: 0 auto 4rem;
+    border: none;
+    border-top: 1px solid var(--rule);
+  }
+
+  /* SECTION BLOCK */
+  .section-block {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+  }
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .section-block h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--ink);
+    margin-bottom: 0.875rem;
+  }
+  .section-block p {
+    font-size: 0.9375rem;
+    color: var(--muted);
+    line-height: 1.75;
+    max-width: 680px;
+    margin-bottom: 1rem;
+  }
+  .section-block p:last-child { margin-bottom: 0; }
+
+  /* TOOLS */
+  .tools-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+  }
+  .tool-pill {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 0.55rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tool-pill-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .tool-pill span {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--ink);
+  }
+
+  /* HIGHLIGHT BOX */
+  .highlight-box {
+    background: var(--surface);
+    border: 1px solid rgba(0,229,255,0.12);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+  }
+  .highlight-box p {
+    font-size: 0.875rem;
+    color: var(--muted);
+    line-height: 1.7;
+    margin: 0 !important;
+    max-width: 100% !important;
+  }
+  .highlight-box strong { color: var(--ink); font-weight: 500; }
+
+  /* TEMARIO */
+  .temario-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 1.75rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .drive-link {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent2);
+    text-decoration: none;
+    border: 1px solid rgba(184,255,94,0.3);
+    padding: 5px 14px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    transition: background 0.2s;
+    margin-bottom: 4px;
+  }
+  .drive-link:hover { background: var(--accent2-light); }
+
+  .semanas-table {
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .semana-row {
+    display: grid;
+    grid-template-columns: 120px 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--rule);
+    transition: background 0.15s;
+  }
+  .semana-row:last-child { border-bottom: none; }
+  .semana-row:hover { background: var(--surface); }
+
+  .semana-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.9375rem;
+    color: var(--ink);
+  }
+  .semana-name.cyan { color: var(--accent); }
+
+  .semana-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    min-height: 22px;
+  }
+  .badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.5px;
+    padding: 3px 9px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .badge-avance {
+    color: var(--accent2);
+    background: var(--accent2-light);
+    border: 1px solid rgba(184,255,94,0.2);
+  }
+  .badge-examen {
+    color: #ff4d6d;
+    background: rgba(255,77,109,0.08);
+    border: 1px solid rgba(255,77,109,0.2);
+  }
+  .badge-presentaciones {
+    color: var(--accent);
+    background: var(--accent-light);
+    border: 1px solid rgba(0,229,255,0.2);
+  }
+
+  .pdf-link {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: color 0.15s;
+    opacity: 0.35;
+    pointer-events: none;
+    cursor: default;
+  }
+  .pdf-link.active {
+    opacity: 1;
+    pointer-events: auto;
+    cursor: pointer;
+  }
+  .pdf-link.active:hover { color: var(--accent); }
+  .pdf-link.none {
+    opacity: 0.2;
+    font-size: 10px;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--rule);
+    padding: 2rem;
+    text-align: center;
+    margin-top: 2rem;
+  }
+  footer p {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    opacity: 0.4;
+    letter-spacing: 0.5px;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero { animation: fadeUp 0.5s ease both; }
+  .intro-grid { animation: fadeUp 0.5s ease 0.1s both; }
+  .section-block { animation: fadeUp 0.5s ease 0.15s both; }
+
+  @media (max-width: 620px) {
+    .intro-grid { grid-template-columns: 1fr; }
+    .intro-card:nth-child(3) { border-top: 1px solid var(--rule); }
+    .hero h1 { font-size: 2rem; }
+    .semana-row { grid-template-columns: 100px 1fr; gap: 0.5rem; }
+    .semana-row .pdf-link { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">Ciencia de <em>Datos</em></span>
+  <span class="nav-badge">CISCO · TECMILENIO</span>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-label">Ingeniería · Semestre actual</div>
+  <h1>Ciencia de <em>Datos</em></h1>
+  <p class="hero-sub">Certificado CISCO — Fundamentos de Ciencia de Datos</p>
+</section>
+
+<!-- INTRO CARDS -->
+<div class="intro-grid">
+  <div class="intro-card">
+    <div class="intro-card-icon">01 — QUÉ ES</div>
+    <h3>¿Qué es la ciencia de datos?</h3>
+    <p>Es el proceso de extraer conocimiento útil a partir de grandes volúmenes de datos. Combina estadística, programación y conocimiento del negocio para responder preguntas reales: ¿por qué bajaron las ventas? ¿qué clientes van a cancelar? ¿cuánto vamos a producir el próximo mes?</p>
+  </div>
+  <div class="intro-card">
+    <div class="intro-card-icon">02 — POR QUÉ IMPORTA</div>
+    <h3>¿Por qué importa?</h3>
+    <p>Hoy todas las empresas generan datos. El problema no es conseguirlos, es saber qué hacer con ellos. Un ingeniero que sabe leer, limpiar, analizar y modelar datos tiene una ventaja enorme en el mercado laboral — independientemente del área en la que trabaje.</p>
+  </div>
+  <div class="intro-card">
+    <div class="intro-card-icon">03 — EL PROCESO</div>
+    <h3>No es magia</h3>
+    <p>No es inteligencia artificial misteriosa. Es un proceso estructurado: defines una pregunta, consigues los datos, los limpias, los analizas, construyes un modelo y comunicas los resultados. Eso es exactamente lo que vas a aprender a hacer paso a paso.</p>
+  </div>
+  <div class="intro-card">
+    <div class="intro-card-icon">04 — LO QUE BUSCAS</div>
+    <h3>Las empresas no buscan magos</h3>
+    <p>Buscan personas que puedan tomar decisiones basadas en evidencia. Al terminar este curso tendrás un proyecto real en tu portafolio, experiencia con SQL y Python, y un certificado de Cisco que avala tus conocimientos a nivel internacional.</p>
+  </div>
+</div>
+
+<!-- QUÉ VAS A APRENDER -->
+<div class="section-block">
+  <div class="section-label">Herramientas</div>
+  <h2>¿Qué vas a aprender?</h2>
+  <p>Vas a trabajar con herramientas reales que se usan en la industria. Empezamos con bases de datos y SQL para entender cómo se almacena y consulta la información. Luego pasamos a Python para analizar, limpiar y construir modelos predictivos.</p>
+  <div class="tools-row">
+    <div class="tool-pill"><div class="tool-pill-dot" style="background:#1D9E75;"></div><span>SQL</span></div>
+    <div class="tool-pill"><div class="tool-pill-dot" style="background:#378ADD;"></div><span>Bases de datos relacionales</span></div>
+    <div class="tool-pill"><div class="tool-pill-dot" style="background:#9b7fe8;"></div><span>Python</span></div>
+    <div class="tool-pill"><div class="tool-pill-dot" style="background:#9b7fe8;"></div><span>Pandas</span></div>
+    <div class="tool-pill"><div class="tool-pill-dot" style="background:#9b7fe8;"></div><span>Scikit-learn</span></div>
+    <div class="tool-pill"><div class="tool-pill-dot" style="background:var(--accent);"></div><span>Cisco: Intro to Data Science</span></div>
+    <div class="tool-pill"><div class="tool-pill-dot" style="background:var(--accent2);"></div><span>Regresión lineal y logística</span></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- POR QUÉ SQL Y NO MONGODB -->
+<div class="section-block">
+  <div class="section-label">Decisión técnica</div>
+  <h2>¿Por qué SQL y no MongoDB?</h2>
+  <p>En muchos cursos de ciencia de datos te enseñan MongoDB porque está de moda. Nosotros vamos a aprender SQL, y aquí te explico por qué es la mejor decisión para tu carrera.</p>
+  <p>La mayoría de los datos del mundo real viven en bases de datos relacionales. Bancos, hospitales, empresas de retail, manufactura — todos usan sistemas como MySQL, PostgreSQL o SQL Server. Un científico de datos que no sabe SQL no puede hacer su trabajo.</p>
+  <div class="highlight-box">
+    <p><strong>MongoDB es útil, pero es una herramienta especializada. SQL es una habilidad fundamental.</strong> Si aprendes SQL primero, entender MongoDB después te toma una tarde. Al revés es mucho más difícil.</p>
+  </div>
+  <p>Además, SQL y Python se complementan perfectamente: consultas los datos con SQL, los traes a Python y ahí los analizas y modelas.</p>
+</div>
+
+<hr class="divider">
+
+<!-- ESTRUCTURA -->
+<div class="section-block">
+  <div class="section-label">Organización</div>
+  <h2>Estructura del curso</h2>
+  <p>Este curso tiene 8 semanas. Las primeras dos arrancamos con bases de datos y SQL. De la semana 3 a la 6 trabajamos con Python: análisis exploratorio, limpieza de datos y modelos de regresión. La semana 7 es el proyecto final y el examen de certificación. La semana 8 son las presentaciones.</p>
+  <p>Cada semana tiene clases de lunes a jueves. El viernes es para completar la tarea o práctica de la semana, que se entrega ese mismo día.</p>
+  <div class="highlight-box">
+    <p><strong>La semana 1 es diferente:</strong> solo hay clase el miércoles y jueves. La tarea se entrega el viernes a las 10am y es individual.</p>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- TEMARIO -->
+<div class="section-block">
+  <div class="temario-header">
+    <div>
+      <div class="section-label">Contenido</div>
+      <h2>Temario</h2>
+    </div>
+    <a href="TU_ENLACE_DE_DRIVE_AQUI" class="drive-link" target="_blank">↗ Drive — Materiales del curso</a>
+  </div>
+
+  <div class="semanas-table">
+
+    <div class="semana-row">
+      <span class="semana-name">Semana 1</span>
+      <span class="semana-badges"></span>
+      <a href="pdfs/Semana1.pdf" class="pdf-link" target="_blank">
+        <svg width="12" height="14" viewBox="0 0 12 14" fill="none"><rect x="0.5" y="0.5" width="11" height="13" rx="1.5" stroke="currentColor"/><line x1="3" y1="4.5" x2="9" y2="4.5" stroke="currentColor"/><line x1="3" y1="7" x2="9" y2="7" stroke="currentColor"/><line x1="3" y1="9.5" x2="6" y2="9.5" stroke="currentColor"/></svg>
+        Semana1.pdf
+      </a>
+    </div>
+
+    <div class="semana-row">
+      <span class="semana-name">Semana 2</span>
+      <span class="semana-badges"></span>
+      <a href="pdfs/Semana2.pdf" class="pdf-link" target="_blank">
+        <svg width="12" height="14" viewBox="0 0 12 14" fill="none"><rect x="0.5" y="0.5" width="11" height="13" rx="1.5" stroke="currentColor"/><line x1="3" y1="4.5" x2="9" y2="4.5" stroke="currentColor"/><line x1="3" y1="7" x2="9" y2="7" stroke="currentColor"/><line x1="3" y1="9.5" x2="6" y2="9.5" stroke="currentColor"/></svg>
+        Semana2.pdf
+      </a>
+    </div>
+
+    <div class="semana-row">
+      <span class="semana-name">Semana 3</span>
+      <span class="semana-badges">
+        <span class="badge badge-avance">Avance del proyecto</span>
+      </span>
+      <a href="pdfs/Semana3.pdf" class="pdf-link" target="_blank">
+        <svg width="12" height="14" viewBox="0 0 12 14" fill="none"><rect x="0.5" y="0.5" width="11" height="13" rx="1.5" stroke="currentColor"/><line x1="3" y1="4.5" x2="9" y2="4.5" stroke="currentColor"/><line x1="3" y1="7" x2="9" y2="7" stroke="currentColor"/><line x1="3" y1="9.5" x2="6" y2="9.5" stroke="currentColor"/></svg>
+        Semana3.pdf
+      </a>
+    </div>
+
+    <div class="semana-row">
+      <span class="semana-name">Semana 4</span>
+      <span class="semana-badges"></span>
+      <a href="pdfs/Semana4.pdf" class="pdf-link" target="_blank">
+        <svg width="12" height="14" viewBox="0 0 12 14" fill="none"><rect x="0.5" y="0.5" width="11" height="13" rx="1.5" stroke="currentColor"/><line x1="3" y1="4.5" x2="9" y2="4.5" stroke="currentColor"/><line x1="3" y1="7" x2="9" y2="7" stroke="currentColor"/><line x1="3" y1="9.5" x2="6" y2="9.5" stroke="currentColor"/></svg>
+        Semana4.pdf
+      </a>
+    </div>
+
+    <div class="semana-row">
+      <span class="semana-name">Semana 5</span>
+      <span class="semana-badges"></span>
+      <a href="pdfs/Semana5.pdf" class="pdf-link" target="_blank">
+        <svg width="12" height="14" viewBox="0 0 12 14" fill="none"><rect x="0.5" y="0.5" width="11" height="13" rx="1.5" stroke="currentColor"/><line x1="3" y1="4.5" x2="9" y2="4.5" stroke="currentColor"/><line x1="3" y1="7" x2="9" y2="7" stroke="currentColor"/><line x1="3" y1="9.5" x2="6" y2="9.5" stroke="currentColor"/></svg>
+        Semana5.pdf
+      </a>
+    </div>
+
+    <div class="semana-row">
+      <span class="semana-name">Semana 6</span>
+      <span class="semana-badges"></span>
+      <a href="pdfs/Semana6.pdf" class="pdf-link" target="_blank">
+        <svg width="12" height="14" viewBox="0 0 12 14" fill="none"><rect x="0.5" y="0.5" width="11" height="13" rx="1.5" stroke="currentColor"/><line x1="3" y1="4.5" x2="9" y2="4.5" stroke="currentColor"/><line x1="3" y1="7" x2="9" y2="7" stroke="currentColor"/><line x1="3" y1="9.5" x2="6" y2="9.5" stroke="currentColor"/></svg>
+        Semana6.pdf
+      </a>
+    </div>
+
+    <div class="semana-row">
+      <span class="semana-name">Semana 7</span>
+      <span class="semana-badges">
+        <span class="badge badge-examen">Examen de Certificación</span>
+      </span>
+      <a href="pdfs/Semana7.pdf" class="pdf-link" target="_blank">
+        <svg width="12" height="14" viewBox="0 0 12 14" fill="none"><rect x="0.5" y="0.5" width="11" height="13" rx="1.5" stroke="currentColor"/><line x1="3" y1="4.5" x2="9" y2="4.5" stroke="currentColor"/><line x1="3" y1="7" x2="9" y2="7" stroke="currentColor"/><line x1="3" y1="9.5" x2="6" y2="9.5" stroke="currentColor"/></svg>
+        Semana7.pdf
+      </a>
+    </div>
+
+    <div class="semana-row">
+      <span class="semana-name cyan">Semana 8</span>
+      <span class="semana-badges">
+        <span class="badge badge-presentaciones">Presentaciones</span>
+      </span>
+      <span class="pdf-link none">— sin PDF —</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>Ciencia de Datos · Ingeniería · Universidad Tecmilenio · Certificado CISCO Introduction to Data Science</p>
+</footer>
+
+</body>
+</html>
