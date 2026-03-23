@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 1 — Experience Analytics</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cyan: #0ABFBC;
+    --cyan-dark: #0a9e9b;
+    --cyan-light: #e0fafa;
+    --navy: #0d1b2a;
+    --navy-2: #1a2e42;
+    --navy-3: #243d56;
+    --text-primary: #f0f4f8;
+    --text-secondary: #94afc8;
+    --text-muted: #5c7a96;
+    --card-bg: #1a2e42;
+    --card-border: #243d56;
+    --accent-pink: #f06292;
+    --accent-amber: #ffb74d;
+    --accent-green: #66bb6a;
+    --accent-purple: #9575cd;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--text-primary);
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #0d1b2a 0%, #1a2e42 50%, #0d2233 100%);
+    border-bottom: 1px solid var(--cyan);
+    padding: 3.5rem 2rem 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: 50%;
+    transform: translateX(-50%);
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(10,191,188,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(10,191,188,0.12);
+    border: 1px solid rgba(10,191,188,0.4);
+    color: var(--cyan);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 1.2rem;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 500;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 0.8rem;
+  }
+  .hero h1 span { color: var(--cyan); }
+  .hero p {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto 2rem;
+  }
+  .hero-modules {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .hero-module-pill {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 6px 16px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .hero-module-pill:hover, .hero-module-pill.active {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    background: rgba(10,191,188,0.08);
+  }
+
+  /* NAV */
+  .sticky-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,27,42,0.96);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--card-border);
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+  }
+  .nav-item {
+    padding: 14px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .nav-item:hover { color: var(--text-secondary); }
+  .nav-item.active { color: var(--cyan); border-bottom-color: var(--cyan); }
+
+  /* MAIN */
+  .main { max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem 4rem; }
+
+  /* SECTION */
+  .section { margin-bottom: 4rem; scroll-margin-top: 60px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--card-border);
+  }
+  .section-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--cyan);
+    background: rgba(10,191,188,0.1);
+    border: 1px solid rgba(10,191,188,0.3);
+    padding: 4px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 500;
+    font-size: 1.5rem;
+    color: #fff;
+  }
+
+  /* OBJECTIVE BOX */
+  .objective {
+    background: rgba(10,191,188,0.07);
+    border-left: 3px solid var(--cyan);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.75rem;
+    font-size: 14px;
+  }
+  .objective strong { color: var(--cyan); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; display: block; margin-bottom: 4px; font-family: 'DM Mono', monospace; }
+  .objective p { color: var(--text-secondary); line-height: 1.6; }
+
+  /* PROSE */
+  .prose { color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.8; }
+  .prose strong { color: var(--text-primary); font-weight: 500; }
+
+  /* SUBSECTION */
+  .subsection { margin-bottom: 2.5rem; }
+  .subsection-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 500;
+    font-size: 1.05rem;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .subsection-title::before {
+    content: '';
+    display: inline-block;
+    width: 6px; height: 6px;
+    background: var(--cyan);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* CARDS GRID */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 1.25rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .card:hover { border-color: var(--cyan); transform: translateY(-2px); }
+  .card-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    margin-bottom: 0.75rem;
+  }
+  .card-icon.cyan { background: rgba(10,191,188,0.15); }
+  .card-icon.pink { background: rgba(240,98,146,0.15); }
+  .card-icon.amber { background: rgba(255,183,77,0.15); }
+  .card-icon.green { background: rgba(102,187,106,0.15); }
+  .card-icon.purple { background: rgba(149,117,205,0.15); }
+  .card h4 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+  .card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* TWO COL */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* HIGHLIGHT BOX */
+  .highlight {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .highlight h4 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+  }
+
+  /* DATA TYPES TABLE */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+    font-size: 14px;
+  }
+  .data-table th {
+    background: rgba(10,191,188,0.1);
+    color: var(--cyan);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--card-border);
+  }
+  .data-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(36,61,86,0.5);
+    color: var(--text-secondary);
+    vertical-align: top;
+  }
+  .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .data-table .type-badge {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    background: rgba(149,117,205,0.15);
+    color: #b39ddb;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .data-table .example-badge {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    background: rgba(10,191,188,0.1);
+    color: var(--cyan);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  /* COMPARISON */
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  @media (max-width: 580px) { .comparison { grid-template-columns: 1fr; } }
+  .comp-card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 1.25rem;
+    border: 1px solid var(--card-border);
+  }
+  .comp-card.left { border-top: 3px solid var(--cyan); }
+  .comp-card.right { border-top: 3px solid var(--accent-pink); }
+  .comp-card h4 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  .comp-card.left h4 { color: var(--cyan); }
+  .comp-card.right h4 { color: var(--accent-pink); }
+  .comp-card p, .comp-card li { font-size: 13.5px; color: var(--text-secondary); line-height: 1.65; }
+  .comp-card ul { padding-left: 1.1rem; }
+  .comp-card li { margin-bottom: 4px; }
+
+  /* QUIZ */
+  .quiz-block {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .quiz-block h4 {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+  .quiz-block h4 em {
+    font-style: normal;
+    color: var(--text-muted);
+    font-size: 11px;
+    display: block;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-option {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    width: 100%;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .quiz-option:hover { border-color: var(--text-muted); color: var(--text-primary); }
+  .quiz-option.correct { background: rgba(102,187,106,0.12); border-color: var(--accent-green); color: var(--accent-green); }
+  .quiz-option.wrong { background: rgba(240,98,146,0.1); border-color: var(--accent-pink); color: var(--accent-pink); }
+  .quiz-feedback {
+    margin-top: 10px;
+    font-size: 13px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    display: none;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.success { background: rgba(102,187,106,0.1); color: var(--accent-green); }
+  .quiz-feedback.error { background: rgba(240,98,146,0.08); color: var(--accent-pink); }
+
+  /* TIMELINE */
+  .timeline { margin-bottom: 1.5rem; }
+  .timeline-item {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    align-items: flex-start;
+  }
+  .timeline-dot {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: rgba(10,191,188,0.12);
+    border: 1px solid rgba(10,191,188,0.4);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--cyan);
+    margin-top: 2px;
+  }
+  .timeline-content h5 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .timeline-content p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* TAGS */
+  .tag {
+    display: inline-block;
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin: 3px;
+    font-family: 'DM Mono', monospace;
+  }
+  .tag.cyan { background: rgba(10,191,188,0.12); color: var(--cyan); border: 1px solid rgba(10,191,188,0.3); }
+  .tag.amber { background: rgba(255,183,77,0.12); color: var(--accent-amber); border: 1px solid rgba(255,183,77,0.3); }
+  .tag.pink { background: rgba(240,98,146,0.1); color: var(--accent-pink); border: 1px solid rgba(240,98,146,0.3); }
+  .tag.green { background: rgba(102,187,106,0.1); color: var(--accent-green); border: 1px solid rgba(102,187,106,0.3); }
+  .tag.purple { background: rgba(149,117,205,0.1); color: var(--accent-purple); border: 1px solid rgba(149,117,205,0.3); }
+
+  /* ORG BOX */
+  .org-box {
+    background: rgba(149,117,205,0.08);
+    border: 1px solid rgba(149,117,205,0.25);
+    border-radius: 10px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .org-box h4 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: #b39ddb;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .org-box p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.65; }
+
+  /* VIZ FACTORS */
+  .viz-factor {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(36,61,86,0.5);
+  }
+  .viz-factor:last-child { border-bottom: none; }
+  .viz-factor-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--cyan);
+    background: rgba(10,191,188,0.1);
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .viz-factor-text strong { display: block; font-size: 14px; color: var(--text-primary); font-weight: 500; margin-bottom: 2px; }
+  .viz-factor-text span { font-size: 13px; color: var(--text-secondary); }
+
+  /* DIVIDER */
+  .divider { border: none; border-top: 1px solid var(--card-border); margin: 2rem 0; }
+
+  /* PROGRESS BAR */
+  .progress-bar-wrap { background: var(--card-bg); border-radius: 100px; height: 6px; margin-bottom: 1rem; overflow: hidden; }
+  .progress-bar { height: 100%; background: var(--cyan); border-radius: 100px; transition: width 1s ease; }
+
+  /* SCROLL ANIMATION */
+  .fade-in { opacity: 0; transform: translateY(16px); transition: opacity 0.5s, transform 0.5s; }
+  .fade-in.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Introducción a la Ciencia de Datos · Cisco</div>
+  <h1>Módulo 1<br><span>Experience Analytics</span></h1>
+  <p>Explora qué son los datos, cómo se clasifican y cómo la analítica genera valor para empresas, organizaciones humanitarias y el medio ambiente.</p>
+  <div class="hero-modules">
+    <div class="hero-module-pill active" onclick="scrollTo('sec1')">1.1 ¿Qué es el dato?</div>
+    <div class="hero-module-pill" onclick="scrollTo('sec2')">1.2 Datos a tu alrededor</div>
+    <div class="hero-module-pill" onclick="scrollTo('sec3')">1.3 Entendimiento del negocio</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="sticky-nav" id="stickyNav">
+  <div class="nav-item active" data-section="sec1" onclick="scrollTo('sec1')">1.1 ¿Qué es el dato?</div>
+  <div class="nav-item" data-section="sec2" onclick="scrollTo('sec2')">1.2 Los datos a tu alrededor</div>
+  <div class="nav-item" data-section="sec3" onclick="scrollTo('sec3')">1.3 Entendimiento del negocio</div>
+</nav>
+
+<main class="main">
+
+  <!-- ==================== SECCIÓN 1.1 ==================== -->
+  <section class="section fade-in" id="sec1">
+    <div class="section-header">
+      <span class="section-number">1.1</span>
+      <h2 class="section-title">¿Qué es el dato?</h2>
+    </div>
+
+    <div class="objective">
+      <strong>Objetivo del tema</strong>
+      <p>Identificar aplicaciones de los datos en la vida diaria.</p>
+    </div>
+
+    <p class="prose">
+      Los datos se generan en casi todas las actividades digitales: sensores, dispositivos, video, audio, redes, archivos de registro, aplicaciones transaccionales, la web y redes sociales. Las organizaciones recopilan estos datos y aplican analítica para tomar mejores decisiones de negocio, mejorar productos y anticipar eventos.
+    </p>
+
+    <!-- TIPOS DE DATO POR ORIGEN -->
+    <div class="subsection">
+      <div class="subsection-title">Tres tipos de datos según su origen</div>
+      <div class="cards-grid">
+        <div class="card">
+          <div class="card-icon cyan">👁</div>
+          <h4>Observados</h4>
+          <p>Se recopilan automáticamente del comportamiento del usuario sin que lo sepa. Ejemplos: historial de búsqueda, actividad en redes sociales, patrones de navegación.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon green">✋</div>
+          <h4>Voluntarios</h4>
+          <p>El usuario los proporciona conscientemente. Ejemplos: formularios de registro, encuestas, preferencias de perfil, reseñas de productos.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon amber">💡</div>
+          <h4>Inferidos</h4>
+          <p>Se deducen a partir de patrones en datos observados y voluntarios. Ejemplos: predicciones de compra, recomendaciones personalizadas, segmentación de clientes.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRÁCTICA -->
+    <div class="subsection">
+      <div class="subsection-title">Práctica — ¿Qué tipo de dato es?</div>
+
+      <div class="quiz-block">
+        <h4>
+          <em>Pregunta 1 de 3</em>
+          Una empresa de calzado deportivo quiere predecir qué marcas comprarán sus clientes para enfocar el marketing. Para el mejor modelo predictivo deben usar datos _______ porque fueron recopilados de usuarios que ya compran zapatos.
+        </h4>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this, true, 'fb1')">Observados</button>
+          <button class="quiz-option" onclick="checkQuiz(this, false, 'fb1')">Voluntarios</button>
+          <button class="quiz-option" onclick="checkQuiz(this, false, 'fb1')">Inferidos</button>
+        </div>
+        <div class="quiz-feedback" id="fb1"></div>
+      </div>
+
+      <div class="quiz-block">
+        <h4>
+          <em>Pregunta 2 de 3</em>
+          Tu equipo desarrolla un chatbot para recopilar información del cliente: probabilidad de compra, preferencias de producto y datos que no puedes obtener de otra fuente. Este tipo de dato es _______.
+        </h4>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this, false, 'fb2')">Observados</button>
+          <button class="quiz-option" onclick="checkQuiz(this, true, 'fb2')">Voluntarios</button>
+          <button class="quiz-option" onclick="checkQuiz(this, false, 'fb2')">Inferidos</button>
+        </div>
+        <div class="quiz-feedback" id="fb2"></div>
+      </div>
+
+      <div class="quiz-block">
+        <h4>
+          <em>Pregunta 3 de 3</em>
+          Buscas destinos de viaje en blogs y motores de búsqueda. Después empiezas a ver anuncios de productos de viaje. Fuiste el objetivo de esos anuncios gracias a datos _______ de tu historial de búsqueda y actividad en redes sociales.
+        </h4>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this, false, 'fb3')">Voluntarios</button>
+          <button class="quiz-option" onclick="checkQuiz(this, false, 'fb3')">Observados</button>
+          <button class="quiz-option" onclick="checkQuiz(this, true, 'fb3')">Inferidos</button>
+        </div>
+        <div class="quiz-feedback" id="fb3"></div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- USOS DE LOS DATOS -->
+    <div class="subsection">
+      <div class="subsection-title">Usos de los datos en la vida diaria</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot">01</div>
+          <div class="timeline-content">
+            <h5>Informar decisiones</h5>
+            <p>Recomendaciones de productos en tiendas en línea, estadísticas de rendimiento de atletas, decisiones de inventario en supermercados. Nuestras decisiones cotidianas están influenciadas por la ciencia de datos y la IA.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot">02</div>
+          <div class="timeline-content">
+            <h5>Mejorar procesos y productos</h5>
+            <p>A través del análisis de reseñas y calificaciones de productos, los fabricantes pueden modificar diseños o cambiar sus procesos para entregar mejores productos a sus consumidores.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot">03</div>
+          <div class="timeline-content">
+            <h5>Rastrear y predecir eventos</h5>
+            <p>Un ingeniero de redes usa un dashboard para aislar zonas de lentitud. Los analistas climáticos predicen impactos económicos del clima. Los autos autónomos reconocen peligros y actúan para evitar accidentes.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot">04</div>
+          <div class="timeline-content">
+            <h5>Visibilidad del comportamiento</h5>
+            <p>Las organizaciones tienen mayor visibilidad de cómo se usan sus productos, los patrones de compra de sus clientes y la logística en tiempo real para gestionar sus tiempos de entrega.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- VISUALIZACIÓN -->
+    <div class="subsection">
+      <div class="subsection-title">La importancia de la visualización</div>
+      <p class="prose">
+        La visualización correcta puede presentar patrones y tendencias de datos complejos de forma intuitiva. Para elegir la visualización adecuada, considera estos cuatro factores:
+      </p>
+      <div class="highlight">
+        <div class="viz-factor">
+          <div class="viz-factor-num">1</div>
+          <div class="viz-factor-text">
+            <strong>Número de variables</strong>
+            <span>¿Cuántas variables distintas necesitas mostrar al mismo tiempo?</span>
+          </div>
+        </div>
+        <div class="viz-factor">
+          <div class="viz-factor-num">2</div>
+          <div class="viz-factor-text">
+            <strong>Cantidad de puntos de datos</strong>
+            <span>¿Cuántas unidades de información hay en cada variable?</span>
+          </div>
+        </div>
+        <div class="viz-factor">
+          <div class="viz-factor-num">3</div>
+          <div class="viz-factor-text">
+            <strong>Cambios en el tiempo</strong>
+            <span>¿Los datos ilustran una evolución o tendencia a lo largo del tiempo?</span>
+          </div>
+        </div>
+        <div class="viz-factor">
+          <div class="viz-factor-num">4</div>
+          <div class="viz-factor-text">
+            <strong>Comparación o correlación</strong>
+            <span>¿Necesitas comparar grupos distintos o mostrar relaciones entre variables?</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SECCIÓN 1.2 ==================== -->
+  <section class="section fade-in" id="sec2">
+    <div class="section-header">
+      <span class="section-number">1.2</span>
+      <h2 class="section-title">Los datos están en todas partes</h2>
+    </div>
+
+    <div class="objective">
+      <strong>Objetivo del tema</strong>
+      <p>Comparar y contrastar los diferentes tipos de datos.</p>
+    </div>
+
+    <!-- DISCRETO VS CONTINUO -->
+    <div class="subsection">
+      <div class="subsection-title">Datos discretos vs datos continuos</div>
+      <div class="comparison">
+        <div class="comp-card left">
+          <h4>Discretos</h4>
+          <p>Valores enteros contables. <strong style="color: var(--text-primary)">No pueden existir en fracciones o mitades.</strong></p>
+          <br>
+          <p>O tienes 12 estudiantes en el salón o tienes 13 — nunca 12.75. El número de estudiantes no puede ser fraccionario porque no existe "tres cuartos de estudiante".</p>
+          <br>
+          <p><strong style="color: var(--text-primary)">Más ejemplos:</strong></p>
+          <ul>
+            <li>Cantidad de productos en inventario</li>
+            <li>Número de pedidos por día</li>
+            <li>Puntaje de un examen (0–100 en enteros)</li>
+            <li>Número de clics en un anuncio</li>
+          </ul>
+        </div>
+        <div class="comp-card right">
+          <h4>Continuos</h4>
+          <p>Pueden tomar <strong style="color: var(--text-primary)">cualquier valor decimal</strong> dentro de un rango, incluyendo fracciones.</p>
+          <br>
+          <p>La temperatura puede ser 36.5°C, el peso 68.3 kg, el tiempo de carga 2.47 segundos. No hay saltos entre valores posibles.</p>
+          <br>
+          <p><strong style="color: var(--text-primary)">Más ejemplos:</strong></p>
+          <ul>
+            <li>Temperatura en grados Celsius</li>
+            <li>Peso de un paquete en kilogramos</li>
+            <li>Tiempo de respuesta de un servidor</li>
+            <li>Ingresos mensuales de una empresa</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- CUANTITATIVO VS CUALITATIVO -->
+    <div class="subsection">
+      <div class="subsection-title">Datos cuantitativos vs cualitativos</div>
+      <div class="comparison">
+        <div class="comp-card left">
+          <h4>Cuantitativos</h4>
+          <p>Expresados en números. Se pueden medir y calcular matemáticamente. Se dividen en discretos y continuos.</p>
+        </div>
+        <div class="comp-card right">
+          <h4>Cualitativos</h4>
+          <p>Describen características no numéricas. Representan categorías, etiquetas o atributos. Ejemplos: color, categoría de producto, nombre de ciudad, estado civil.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TIPOS DE DATOS EN SISTEMAS -->
+    <div class="subsection">
+      <div class="subsection-title">Tipos de datos en sistemas</div>
+      <p class="prose">El tipo de dato indica a un sistema cómo interpretar el valor y qué operaciones puede realizar con él.</p>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Tipo</th>
+            <th>Descripción</th>
+            <th>Ejemplo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="type-badge">String</span></td>
+            <td>Texto o cadena de caracteres. No se puede operar matemáticamente.</td>
+            <td><span class="example-badge">"Monterrey"</span></td>
+          </tr>
+          <tr>
+            <td><span class="type-badge">Integer</span></td>
+            <td>Número entero sin decimales. Dato discreto.</td>
+            <td><span class="example-badge">42</span></td>
+          </tr>
+          <tr>
+            <td><span class="type-badge">Float</span></td>
+            <td>Número con punto decimal. Dato continuo.</td>
+            <td><span class="example-badge">3.1416</span></td>
+          </tr>
+          <tr>
+            <td><span class="type-badge">DateTime</span></td>
+            <td>Fecha y hora. Permite ordenar y calcular intervalos.</td>
+            <td><span class="example-badge">2024-03-15 14:30</span></td>
+          </tr>
+          <tr>
+            <td><span class="type-badge">Boolean</span></td>
+            <td>Solo dos valores posibles: verdadero o falso.</td>
+            <td><span class="example-badge">TRUE / FALSE</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ESTRUCTURADO VS NO ESTRUCTURADO -->
+    <div class="subsection">
+      <div class="subsection-title">Estructurado vs no estructurado</div>
+      <div class="comparison">
+        <div class="comp-card left">
+          <h4>Datos estructurados</h4>
+          <p>Organizados en filas y columnas con un formato fijo. Son fáciles de almacenar, buscar y analizar.</p>
+          <br>
+          <ul>
+            <li>Tablas de bases de datos (SQL)</li>
+            <li>Hojas de cálculo (Excel, CSV)</li>
+            <li>Registros de transacciones</li>
+          </ul>
+        </div>
+        <div class="comp-card right">
+          <h4>Datos no estructurados</h4>
+          <p>Sin formato fijo. Son más difíciles de procesar pero representan la mayoría del dato generado en el mundo.</p>
+          <br>
+          <ul>
+            <li>Imágenes y videos</li>
+            <li>Correos electrónicos</li>
+            <li>Publicaciones en redes sociales</li>
+            <li>Archivos de audio</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SELECCIÓN DE DATOS RELEVANTES -->
+    <div class="subsection">
+      <div class="subsection-title">Selección de datos relevantes</div>
+      <p class="prose">
+        Antes de procesar los datos hay que categorizarlos como estructurados o no estructurados. Una vez seleccionados y definidos, los datos se vuelven relevantes para determinar las preguntas que se quieren responder. <strong>No todos los datos disponibles son útiles</strong> — la selección inteligente es parte fundamental del proceso de ciencia de datos.
+      </p>
+      <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.75rem;">
+        <span class="tag cyan">Definir la pregunta</span>
+        <span class="tag amber">Identificar los datos relevantes</span>
+        <span class="tag green">Categorizarlos</span>
+        <span class="tag purple">Seleccionar solo los necesarios</span>
+        <span class="tag pink">Procesar y analizar</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SECCIÓN 1.3 ==================== -->
+  <section class="section fade-in" id="sec3">
+    <div class="section-header">
+      <span class="section-number">1.3</span>
+      <h2 class="section-title">Entendimiento del negocio</h2>
+    </div>
+
+    <div class="objective">
+      <strong>Objetivo del tema</strong>
+      <p>Evaluar el valor generado por la analítica de datos.</p>
+    </div>
+
+    <!-- EMPRESAS -->
+    <div class="subsection">
+      <div class="subsection-title">Analítica para el negocio</div>
+      <p class="prose">
+        La ciencia de datos permite a las empresas entender mejor el impacto de sus productos y servicios, ajustar sus métodos y metas, y entregar mejores productos más rápido. El <strong>análisis de tendencias</strong> es una forma clave de obtener información sobre los indicadores clave de rendimiento (KPI) a lo largo del tiempo.
+      </p>
+    </div>
+
+    <!-- HUMANITARIO -->
+    <div class="subsection">
+      <div class="subsection-title">Ejemplos sociales y humanitarios</div>
+      <p class="prose">Las organizaciones humanitarias usan datos para servir a sus comunidades. La analítica predictiva puede enfocar los esfuerzos en acciones <strong>preventivas</strong> en lugar de reactivas.</p>
+
+      <div class="org-box">
+        <h4>🌐 OCHA — Oficina de la ONU para Coordinación Humanitaria</h4>
+        <p>Proporciona servicios de gestión de información a la comunidad humanitaria recopilando y compartiendo datos. Al compartir datos y análisis, OCHA permite la coordinación de recursos, toma de decisiones y financiamiento en situaciones de crisis.</p>
+      </div>
+
+      <div class="org-box">
+        <h4>📊 HDX — Humanitarian Data Exchange</h4>
+        <p>Plataforma de la ONU que proporciona herramientas de intercambio de datos a trabajadores de la ONU, ONGs, gobiernos y universidades. Mejora la colaboración en tiempos de crisis al hacer los datos accesibles y reutilizables.</p>
+      </div>
+
+      <div class="org-box">
+        <h4>🏆 DrivenData — Ciencia de datos para impacto social</h4>
+        <p>Organización que conecta a profesionales de datos con problemas del mundo real a través de competencias. Un ejemplo: predecir el nivel de daño por terremoto según la ubicación y la construcción de edificios, para que los planificadores determinen con anticipación qué estructuras necesitan medidas preventivas. Todas las soluciones ganadoras se publican como <strong>código abierto</strong> para que cualquiera aprenda o construya sobre ellas.</p>
+      </div>
+    </div>
+
+    <!-- MEDIO AMBIENTE -->
+    <div class="subsection">
+      <div class="subsection-title">Ejemplo ambiental — Cambio climático</div>
+      <p class="prose">
+        Las agencias ambientales rastrean datos de cambio climático a través de observaciones que permiten predecir impactos sociales y económicos. El análisis de datos climáticos no solo describe lo que ya ocurrió — permite anticipar cómo el clima afectará economías, infraestructuras y comunidades en el futuro.
+      </p>
+      <div class="cards-grid">
+        <div class="card">
+          <div class="card-icon cyan">📡</div>
+          <h4>Recolección</h4>
+          <p>Sensores, satélites y estaciones meteorológicas generan datos climáticos continuos a escala global.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon amber">📈</div>
+          <h4>Análisis de tendencias</h4>
+          <p>Los analistas identifican patrones de temperatura, precipitación y eventos extremos a lo largo de décadas.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon pink">🔮</div>
+          <h4>Predicción de impacto</h4>
+          <p>Los modelos predicen consecuencias económicas y sociales: inundaciones, sequías, migración climática.</p>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<script>
+function scrollTo(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function checkQuiz(btn, isCorrect, feedbackId) {
+  const parent = btn.closest('.quiz-block');
+  const options = parent.querySelectorAll('.quiz-option');
+  options.forEach(o => { o.disabled = true; });
+  const fb = document.getElementById(feedbackId);
+  fb.classList.add('show');
+  if (isCorrect) {
+    btn.classList.add('correct');
+    fb.classList.add('success');
+    fb.textContent = '¡Correcto! Bien identificado.';
+  } else {
+    btn.classList.add('wrong');
+    fb.classList.add('error');
+    fb.textContent = 'No es correcto. Revisa las definiciones de cada tipo de dato.';
+  }
+}
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+const navItems = document.querySelectorAll('.nav-item');
+const sections = document.querySelectorAll('.section');
+const sectionObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navItems.forEach(n => n.classList.remove('active'));
+      const match = document.querySelector('.nav-item[data-section="' + e.target.id + '"]');
+      if (match) match.classList.add('active');
+    }
+  });
+}, { threshold: 0.3 });
+sections.forEach(s => sectionObserver.observe(s));
+</script>
+</body>
+</html>
